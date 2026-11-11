@@ -6,7 +6,7 @@ Zi Yang, Ying Li, Alejandro Lancho, Darío Cabezas Larese, Pablo M. Olmos, and M
 
 The University of Hong Kong · National University of Singapore · Universidad Carlos III de Madrid
 
-[Paper](https://openreview.net/forum?id=aP71hsUN95) · [Code](https://github.com/ziyang18/FSKA) · [Poster](assets/poster.pdf) · [Presentation slides](assets/slides.pdf)
+[Paper](https://openreview.net/forum?id=aP71hsUN95) · [Code](https://github.com/ziyang18/FSKA) · [Video](https://youtu.be/p8556RA_ys8) · [Poster](assets/poster.pdf) · [Presentation slides](assets/slides.pdf)
 
 ## Overview
 
@@ -25,7 +25,7 @@ The classification table reports means and standard deviations over three runs f
 - An overview of the method and its assumptions.
 - Sentence-classification results and efficiency measurements.
 - Additional MNIST ablation results.
-- A framed, nine-slide PDF presentation preview.
+- A YouTube presentation alongside a framed, nine-slide PDF preview.
 - Downloadable poster and presentation PDFs.
 - Reproduction details and the paper citation.
 
