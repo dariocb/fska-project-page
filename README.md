@@ -1,44 +1,55 @@
-# FSKA project page — private draft
+# Flow-based Spectral Kernel Learning for Nonstationary Attention
 
-Static FSKA research project webpage, stored in the private repository https://github.com/dariocb/fska-project-page. GitHub Pages is disabled. The website can be previewed locally.
+**FSKA · NeurIPS 2026**
 
-## Preview locally
+Zi Yang, Ying Li, Alejandro Lancho, Darío Cabezas Larese, Pablo M. Olmos, and Michael Minyi Zhang
 
-Open `index.html` in a browser, or run this command from this directory:
+The University of Hong Kong · National University of Singapore · Universidad Carlos III de Madrid
+
+[Paper](https://openreview.net/forum?id=aP71hsUN95) · [Code](https://github.com/ziyang18/FSKA) · [Poster](assets/poster.pdf) · [Presentation slides](assets/slides.pdf)
+
+## Overview
+
+FSKA learns a nonstationary attention kernel through its spectral density. A RealNVP normalizing flow generates paired frequencies for random features. Head-specific kernels adapt token similarities, while fixed value projections preserve complementary information across heads.
+
+Positive features support aggregation whose cost grows linearly with sequence length for fixed feature and value dimensions.
+
+## Results
+
+The sentence-classification comparison reports the highest mean macro-F1 for FSKA on five of six datasets. The project page includes the complete comparison, parameter and throughput figures, and an expandable MNIST ablation study.
+
+The classification table reports means and standard deviations over three runs from the poster. The implementation repository defaults to five model seeds per experiment, with data and split seed 42. See the [experiment instructions](https://github.com/ziyang18/FSKA#experiments) for sentence classification, full-document classification, and nonstationary toy regression.
+
+## Website contents
+
+- An overview of the method and its assumptions.
+- Sentence-classification results and efficiency measurements.
+- Additional MNIST ablation results.
+- A framed, nine-slide PDF presentation preview.
+- Downloadable poster and presentation PDFs.
+- Reproduction details and the paper citation.
+
+## Local preview
+
+Open index.html in a browser, or serve this directory locally.
 
 ```sh
 python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-Then visit http://127.0.0.1:8000. The server only listens on your own computer. Stop it with Ctrl+C.
+Visit http://127.0.0.1:8000. The website uses static HTML, CSS, JavaScript, and relative asset links. No build step is required.
 
-## Repository
+## Citation
 
-Repository: https://github.com/dariocb/fska-project-page
+```bibtex
+@inproceedings{yang2026fska,
+  title = {Flow-based Spectral Kernel Learning for Nonstationary Attention},
+  author = {Yang, Zi and Li, Ying and Lancho, Alejandro and Larese, Dar{\'i}o C. and Olmos, Pablo M. and Zhang, Michael Minyi},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year = {2026}
+}
+```
 
-The default branch is main. Poster and slides are included in assets/, and section 4 embeds the nine-page slides PDF in a bordered frame. Both resource buttons download the PDF files.
+## Contact
 
-## Publish when ready
-
-1. Verify the author names, publication details, result tables, and contact addresses.
-2. Remove the `noindex, nofollow` meta tag if you want search-engine indexing. That tag is not access control; privacy comes from keeping the repository private and the site unpublished.
-3. With GitHub Free, make the repository public before enabling Pages. Paid plans can support publishing from a private repository, but a published Pages site is generally public.
-4. Enable Settings → Pages → Deploy from a branch → main → /(root).
-
-The site uses relative asset links so it works under a GitHub project URL. There are no external fonts, analytics, libraries, or automatic deployment workflows.
-
-## Contents and sources
-
-- Research content, figures, author details, and results: user-supplied `poster.pdf`, page 1.
-- Paper link: https://openreview.net/forum?id=aP71hsUN95
-- `assets/poster.pdf`: original poster.
-- `assets/slides.pdf`: the nine-slide presentation aligned with the shortened SlidesLive narration.
-- Equations and figures: crops from the supplied poster, not recreated data.
-
-The text is a summary of the poster, not the paper's verbatim abstract. The throughput plot is an original image because raw benchmark data were not supplied. No numerical speedup is inferred from it.
-
-## Presentation update
-
-The main method narrative follows the nine-slide SlidesLive deck. The MNIST ablation remains available as expandable additional results. Repository reproduction details retain the distinction between three poster runs and five default model seeds. The displayed author name is Darío Cabezas Larese. The BibTeX remains as supplied by the repository.
-
-The final video file or SlidesLive URL has not been supplied. Add the final recording and any caption track when available. No video duration or chapter timestamps are inferred from the script.
+[pamartin@ing.uc3m.es](mailto:pamartin@ing.uc3m.es) · [mzhang18@hku.hk](mailto:mzhang18@hku.hk)
