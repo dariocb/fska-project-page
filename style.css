@@ -15,9 +15,38 @@
   height: 660px;
   border: 0;
 }
+.presentation-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  margin-top: 32px;
+}
+.presentation-grid .pdf-frame,
+.video-frame {
+  margin-top: 0;
+  overflow: hidden;
+  border: 1px solid #bccdd6;
+  border-radius: 8px;
+  background: #f1f6f8;
+}
+.presentation-grid iframe {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  border: 0;
+}
 @media (max-width: 760px) {
-  .pdf-frame iframe {
-    height: 420px;
+  .presentation-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .presentation-grid .pdf-frame iframe {
+    height: 360px;
+    aspect-ratio: auto;
+  }
+  .video-frame iframe {
+    aspect-ratio: 16 / 9;
   }
 }
 @media (max-width: 520px) { .topbar nav { flex-wrap: wrap; justify-content: flex-end; gap: 8px 14px; } .topbar { gap: 18px; } }
