@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="FSKA learns a nonstationary spectral kernel for attention, simplifying projections while retaining linear aggregation.">
+  <meta name="theme-color" content="#07557c">
+  <title>FSKA — Flow-based Spectral Kernel Learning</title>
+  <link rel="icon" href="assets/thumbnail.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#overview">Skip to content</a>
+<header class="topbar"><a href="#" class="wordmark">FSKA<span> / Research project</span></a><nav aria-label="Main navigation"><a href="#presentation">Presentation</a><a href="#method">Method</a><a href="#results">Results</a><a href="#reproducibility">Reproducibility</a><a href="#citation">Citation</a></nav></header>
+<main>
+  <section class="hero" aria-labelledby="title">
+    <p class="eyebrow">NeurIPS 2026</p>
+    <h1 id="title">Flow-based Spectral Kernel Learning for <span>Nonstationary Attention</span></h1>
+    <div class="authors"><span>Zi Yang<sup>1,*</sup></span><span>Ying Li<sup>2,*</sup></span><span>Alejandro Lancho<sup>3</sup></span><span>Darío Cabezas Larese<sup>3</sup></span><span>Pablo M. Olmos<sup>3,†</sup></span><span>Michael Minyi Zhang<sup>1,†</sup></span></div>
+    <p class="affiliations"><span><sup>1</sup> The University of Hong Kong</span><span><sup>2</sup> National University of Singapore</span><span><sup>3</sup> Universidad Carlos III de Madrid</span></p>
+    <p class="contributions">* Equal contribution &nbsp; † Corresponding authors</p>
+    <div class="resources"><a class="primary" href="https://openreview.net/forum?id=aP71hsUN95" target="_blank" rel="noopener noreferrer">Read the paper <span aria-hidden="true">↗</span></a><a href="https://github.com/ziyang18/FSKA">Code <span aria-hidden="true">↗</span></a><a href="assets/poster.pdf" download="FSKA-poster.pdf">Poster <span aria-hidden="true">↓</span></a><a href="assets/slides.pdf" download="FSKA-SlidesLive-slides.pdf">Slides (PDF) <span aria-hidden="true">↓</span></a></div>
+    <p class="standfirst">Learn how to compare tokens.<br>Keep aggregation linear in sequence length.</p>
+  </section>
+  <section id="overview" class="overview section">
+    <div class="section-label">01 / Overview</div>
+    <div class="overview-content"><h2>Adaptive similarities,<br>simpler projections</h2><p>A stationary kernel depends on the difference between two inputs. We want similarities that can also depend on each input individually. Dense attention computes pairwise interactions, so its cost grows quadratically with sequence length.</p><p>FSKA learns the similarity kernel through a nonstationary spectral density and uses random features to factorize attention. Each head learns its own kernel and uses a fixed value projection. For fixed feature and value dimensions, aggregation cost grows linearly with sequence length.</p></div>
+  </section>
+  <section id="method" class="section method">
+    <div class="section-label">02 / Method</div>
+    <h2>Learning the attention kernel</h2>
+    <div class="method-row">
+      <span class="step">01</span>
+      <h3>Nonstationary spectral features</h3>
+      <div>
+        <p>A joint density over frequency pairs represents similarities beyond functions of the difference between two inputs. The feature map combines sines and cosines evaluated at sampled frequencies.</p>
+        <p class="caveat">For a real-valued kernel with the stated normalized spectral probability representation, the signed-feature inner product is an unbiased kernel estimator. The feature dimension is even, with M/2 independent frequency pairs.</p>
+      </div>
+    </div>
+    <div class="method-row">
+      <span class="step">02</span>
+      <h3>Flow-based density learning</h3>
+      <div>
+        <p>A RealNVP normalizing flow maps samples from a standard Gaussian to frequency pairs. Its tractable Jacobian determinant lets us evaluate the learned density. Training combines the task loss with a spectral regularizer.</p>
+        <figure>
+          <img src="assets/kernels-spectra.png" alt="Ground-truth, normalizing-flow, and implicit neural-model kernels and spectral densities" loading="lazy">
+          <figcaption>GT denotes ground truth, NF a normalizing flow, and NN an implicit neural model. In this example, the flow recovers more of the target spectrum and kernel pattern.</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="method-row">
+      <span class="step">03</span>
+      <h3>Fixed values, diverse heads</h3>
+      <div>
+        <p>Query and key projections control similarity. Value projections define the space where information is aggregated. Fixed orthogonal value projections retain complementary subspaces across heads.</p>
+        <p>Each head learns its own kernel, which sets its attention weights.</p>
+      </div>
+    </div>
+    <div class="method-row">
+      <span class="step">04</span>
+      <h3>Positive features, linear aggregation</h3>
+      <div>
+        <p>ELU plus one produces positive features to avoid signed cancellation. Each head accumulates feature–value products and feature sums, then combines them with each token's features to compute its output.</p>
+        <div class="equations">
+          <img src="assets/positive-features.png" alt="Positive features equal ELU of the signed features plus one">
+          <img src="assets/linear-aggregation.png" alt="Normalized output computed from accumulated feature–value products and feature sums">
+        </div>
+        <p>This avoids constructing the full attention-score matrix. For fixed feature and value dimensions, aggregation cost is linear in sequence length, with per-head cost O(LM d<sub>v</sub>).</p>
+        <p class="caveat">The unbiasedness result applies to the original signed features. It does not automatically extend to the ELU-transformed affinity or normalized attention ratio.</p>
+      </div>
+    </div>
+  </section>
+  <section id="results" class="section results">
+    <div class="section-label">03 / Results</div>
+    <h2>Classification and efficiency</h2>
+    <div class="finding"><p class="finding-number">5 of 6</p><p>datasets with the highest mean macro-F1<br>among the methods in the comparison below</p></div>
+    <h3>Sentence classification</h3><p class="table-description">Macro-F1 (%), mean ± standard deviation over three runs. KPCA has the highest mean on RT-Polarity.</p>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Sentence classification results. Scroll horizontally on smaller screens."><table><caption class="sr-only">Sentence classification macro-F1 results</caption><thead><tr><th scope="col">Model</th><th scope="col">DBPedia</th><th scope="col">AGNews</th><th scope="col">TREC</th><th scope="col">RT-Pol.</th><th scope="col">SST-2</th><th scope="col">SST-5</th></tr></thead><tbody>
+    <tr><th scope="row">Transformer</th><td>98.13 ± 0.15</td><td>90.43 ± 0.07</td><td>86.14 ± 0.93</td><td>70.52 ± 0.45</td><td>76.07 ± 1.10</td><td>35.11 ± 1.46</td></tr>
+    <tr><th scope="row">MIKAN</th><td>97.74 ± 0.01</td><td>91.15 ± 0.24</td><td>85.47 ± 1.07</td><td>71.30 ± 0.92</td><td>76.04 ± 0.86</td><td>32.84 ± 0.39</td></tr>
+    <tr><th scope="row">Performer</th><td>98.12 ± 0.09</td><td>90.23 ± 0.31</td><td>85.70 ± 0.57</td><td>70.88 ± 0.62</td><td>77.24 ± 0.41</td><td>35.92 ± 0.96</td></tr>
+    <tr><th scope="row">RKA</th><td>98.26 ± 0.01</td><td>90.80 ± 0.28</td><td>85.56 ± 0.75</td><td>71.15 ± 0.72</td><td>77.08 ± 1.46</td><td>36.10 ± 0.49</td></tr>
+    <tr><th scope="row">GMM-RKS</th><td>96.76 ± 0.21</td><td>90.58 ± 0.41</td><td>85.36 ± 0.91</td><td>71.05 ± 1.02</td><td>76.81 ± 0.89</td><td>36.42 ± 0.84</td></tr>
+    <tr><th scope="row">KPCA</th><td>97.59 ± 0.14</td><td>90.20 ± 0.49</td><td>85.90 ± 0.96</td><td><strong>72.16 ± 1.58</strong></td><td>77.62 ± 1.13</td><td>36.97 ± 1.36</td></tr>
+    <tr><th scope="row">MetaLA</th><td>97.24 ± 0.15</td><td>91.14 ± 0.36</td><td>85.07 ± 1.02</td><td>70.28 ± 1.71</td><td>77.03 ± 0.69</td><td>35.27 ± 1.41</td></tr>
+    <tr class="ours"><th scope="row">FSKA</th><td><strong>98.33 ± 0.13</strong></td><td><strong>91.20 ± 0.37</strong></td><td><strong>86.21 ± 1.02</strong></td><td>72.08 ± 1.44</td><td><strong>78.74 ± 1.15</strong></td><td><strong>38.16 ± 1.40</strong></td></tr>
+    </tbody></table></div>
+    <p>Compared with Transformer, FSKA improves mean macro-F1 from 76.07 to 78.74 on SST-2 and from 35.11 to 38.16 on SST-5.</p>
+    <div class="efficiency"><h3>Fewer projection parameters</h3><p>Removing learned Q/K and fixing V reduces projection parameters. The figures compare trainable parameters and training throughput as sequence length increases.</p><figure><img src="assets/efficiency.png" alt="Original poster charts comparing model parameter breakdowns and training throughput across sequence lengths" loading="lazy"><figcaption>Synthetic LRA-style throughput benchmark, sequence lengths 256–4096. Higher throughput is faster. Successful measurements only.</figcaption></figure></div>
+    <details><summary>Additional results · MNIST ablation study</summary><p>FSKA retains accuracy with simpler projections. Learning V adds little in this experiment, while direct signed random Fourier features reduce accuracy.</p><div class="table-scroll" tabindex="0" role="region" aria-label="MNIST ablation results"><table><caption class="sr-only">Architectural choices on MNIST</caption><thead><tr><th scope="col">Model</th><th scope="col">Q/K</th><th scope="col">Learn V</th><th scope="col">Flexible kernel</th><th scope="col">PRF</th><th scope="col">Accuracy</th></tr></thead><tbody><tr><th scope="row">Transformer</th><td>Yes</td><td>Yes</td><td>No</td><td>—</td><td>0.8556</td></tr><tr><th scope="row">Transformer w/o QKV</th><td>No</td><td>No</td><td>No</td><td>—</td><td>0.5267</td></tr><tr><th scope="row">IKAN</th><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td><td>0.8656</td></tr><tr class="ours"><th scope="row">FSKA</th><td>No</td><td>No</td><td>Yes</td><td>Yes</td><td>0.8722</td></tr><tr><th scope="row">+ Direct RFF</th><td>No</td><td>No</td><td>Yes</td><td>No</td><td>0.3956</td></tr><tr><th scope="row">+ Learnable V</th><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td><td>0.8725</td></tr></tbody></table></div></details>
+  </section>
+  <section id="presentation" class="section presentation">
+    <div class="section-label">04 / Presentation</div>
+    <h2>The short presentation</h2>
+    <p>The nine-slide deck follows the method from spectral features to linear aggregation, then presents sentence-classification results and efficiency measurements.</p>
+    <figure>
+      <div class="pdf-frame">
+        <iframe src="assets/slides.pdf#view=FitH" title="FSKA presentation PDF, nine slides" loading="lazy"></iframe>
+      </div>
+      <figcaption><a href="assets/slides.pdf">Open PDF in a separate tab</a> · <a href="assets/slides.pdf" download="FSKA-SlidesLive-slides.pdf">Download slides · 9 pages</a></figcaption>
+    </figure>
+  </section>
+  <section id="reproducibility" class="section">
+    <div class="section-label">05 / Reproducibility</div>
+    <h2>Run the experiments</h2>
+    <p>The repository provides the FSKA implementation and runnable configurations for three experiments.</p>
+    <ul>
+      <li><strong>Sentence classification.</strong> DBPedia, AG News, TREC, RT-Polarity, SST-2, and SST-5.</li>
+      <li><strong>Full-document classification.</strong> SCOTUS, BBC News, 20 Newsgroups, and arXiv. Documents are processed without truncation or chunking.</li>
+      <li><strong>Nonstationary toy regression.</strong> Fit FSKA to synthetic data with four smoothly changing regimes.</li>
+    </ul>
+    <p>The sentence classification table above reports mean and standard deviation over <strong>three runs</strong> from the poster. The repository defaults to <strong>five model seeds</strong> per experiment and fixes the data and split seed at 42.</p>
+    <p><a href="https://github.com/ziyang18/FSKA#experiments">See configurations and run instructions on GitHub</a></p>
+  </section>
+  <section id="citation" class="section citation"><div class="section-label">06 / Citation</div><div class="citation-heading"><h2>Cite this work</h2><button type="button" id="copy-citation">Copy BibTeX</button></div><pre><code id="bibtex">@inproceedings{yang2026fska,
+  title = {Flow-based Spectral Kernel Learning for Nonstationary Attention},
+  author = {Yang, Zi and Li, Ying and Lancho, Alejandro and Larese, Dar{\'i}o C. and Olmos, Pablo M. and Zhang, Michael Minyi},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year = {2026}
+}</code></pre><p id="copy-status" role="status" aria-live="polite"></p></section>
+</main>
+<footer><a class="wordmark" href="#">FSKA</a><p>Correspondence: <a href="mailto:pamartin@ing.uc3m.es">pamartin@ing.uc3m.es</a><br><a href="mailto:mzhang18@hku.hk">mzhang18@hku.hk</a></p><a href="assets/poster.png">View full poster ↗</a></footer>
+</body>
+</html>
