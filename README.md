@@ -1,6 +1,6 @@
 # FSKA project page — private draft
 
-This is a complete static website prepared from the supplied research poster. It is not deployed, and no GitHub repository has been created by this package. Keep the repository private and GitHub Pages disabled until you choose to publish.
+Static FSKA research project webpage, stored in the private repository https://github.com/dariocb/fska-project-page. GitHub Pages is disabled. The website can be previewed locally.
 
 ## Preview locally
 
@@ -12,9 +12,11 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 Then visit http://127.0.0.1:8000. The server only listens on your own computer. Stop it with Ctrl+C.
 
-## Save to a private GitHub repository
+## Repository
 
-Create a new **private** repository on GitHub. Upload the contents of this folder, with `index.html` at the repository root. Leave Settings → Pages disabled. Invite collaborators explicitly if needed.
+Repository: https://github.com/dariocb/fska-project-page
+
+The default branch is main. Poster and slides are included in assets/, and section 4 embeds the nine-page slides PDF in a bordered frame. Both resource buttons download the PDF files.
 
 ## Publish when ready
 
