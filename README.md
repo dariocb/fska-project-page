@@ -6,7 +6,7 @@ Zi Yang, Ying Li, Alejandro Lancho, Darío Cabezas Larese, Pablo M. Olmos, and M
 
 The University of Hong Kong · National University of Singapore · Universidad Carlos III de Madrid
 
-[Project website](https://dariocb.github.io/fska-project-page/) · [Paper](https://openreview.net/forum?id=aP71hsUN95) · [Code](https://github.com/ziyang18/FSKA) · [Video](https://youtu.be/p8556RA_ys8) · [Poster](assets/poster.pdf) · [Presentation slides](assets/slides.pdf)
+[Project website](https://dariocb.github.io/fska-project-page/) · [Paper](https://openreview.net/forum?id=aP71hsUN95) · [Code](https://github.com/ziyang18/FSKA) · [Video](https://youtu.be/MBPC_6GG1Cw) · [Poster](assets/poster.pdf) · [Presentation slides](assets/slides.pdf)
 
 ## Overview
 
